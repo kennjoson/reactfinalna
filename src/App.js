@@ -1,13 +1,48 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import Hometabs from './Hometabs';
+import React from 'react';
+import ProdManagement from './ProductManagement';
+import StockManagement from './StockManagement';
+import CategoryManagement from './CategoryManagement';
+import { ProdListProvider } from './ProdListContext';
+import TransactionManagement from './TransactionManagement';
 
+const App = () => {
+  const [selectedTab, setSelectedTab] = React.useState('Product Management');
 
-function App() {
+  const TabContent = () => {
+    if (selectedTab === 'Product Management') {
+      return <ProdManagement />;
+    } else if (selectedTab === 'Stock Management') {
+      return <StockManagement />;
+    } else if (selectedTab === 'Category Management') {
+      return <CategoryManagement />;
+    } else if (selectedTab === 'Transaction Management') {
+      return <TransactionManagement />;
+    }
+    return null;
+  };
+
   return (
-    <>
-    <Hometabs/>
-    </>
+    <ProdListProvider>
+      <div>
+        <ul style={{ display: 'flex', listStyle: 'none', justifyContent: 'center' }}>
+          <li style={{ marginRight: '10px' }}>
+            <button onClick={() => setSelectedTab('Product Management')}>Product Management</button>
+          </li>
+          <li style={{ marginRight: '10px' }}>
+            <button onClick={() => setSelectedTab('Stock Management')}>Stock Management</button>
+          </li>
+          <li style={{ marginRight: '10px' }}>
+            <button onClick={() => setSelectedTab('Category Management')}>Category Management</button>
+          </li>
+          <li style={{ marginRight: '10px' }}>
+            <button onClick={() => setSelectedTab('Transaction Management')}>Transaction Management</button>
+          </li>
+        </ul>
+        <hr />
+        {TabContent()}
+      </div>
+    </ProdListProvider>
   );
-}
+};
 
 export default App;

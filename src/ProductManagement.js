@@ -1,67 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { styles } from "./Styles";
 import './styles.css';
+import { ProdListContext } from './ProdListContext';
+
 
 const ProdManagement = () => {
-  const [prodList, setProdList] = useState([]);
-  const [count, setCount] = useState(0);
-  const [productId, setProductId] = useState('');
+  const {productId,prodList, setProdList, categories, addProduct } = useContext(ProdListContext);
   const [prodName, setProdName] = useState('');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-
-  const [showCategoryModal, setShowCategoryModal] = useState(false);
-  const [editedCategory, setEditedCategory] = useState('');
-  const [editIndex, setEditIndex] = useState(null);
-
   const [showProductModal, setShowProductModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const handleButton = () => {
-    const newCount = count + 1;
-    setCount(newCount);
-    const string = 'ITEM-';
-    const newProductId = string + newCount;
-    setProductId(newProductId);
 
+  const handleButton = (event) => {
+    event.preventDefault();
 
-    const product = { productId: newProductId, prodName, price, stock, prodCategory: selectedCategory};
-    setProdList([...prodList, product]);
+    if (!prodName || !price || !stock || !selectedCategory) {
+      alert('Please fill in all field required!!');
+      return false;
+    }
+
+    addProduct(prodName, price, stock, selectedCategory);
 
     setProdName('');
     setPrice('');
     setStock('');
     setSelectedCategory('');
-  };
-
-  const handleCategoryAdd = () => {
-    if (newCategory.trim() !== '') {
-      setCategories([...categories, newCategory]);
-      setNewCategory('');
-    }
-  };
-  const handleEdit = (index) => {
-    setEditedCategory(categories[index]);
-    setEditIndex(index);
-    setShowCategoryModal(true);
-  };
-
-  const handleSaveEdit = () => {
-    if (editedCategory.trim() !== '') {
-      const updatedCategories = [...categories];
-      updatedCategories[editIndex] = editedCategory;
-      setCategories(updatedCategories);
-      setShowCategoryModal(false);
-    }
-  };
-
-  const handleDelete = (index) => {
-    const updatedCategories = categories.filter((_, idx) => idx !== index);
-    setCategories(updatedCategories);
   };
 
   const handleEditProduct = (product) => {
@@ -76,7 +43,7 @@ const ProdManagement = () => {
     setProdList(updatedList);
     setShowProductModal(false);
   };
-
+  
   const handleDeleteProduct = (index) => {
     const updatedProdList = [...prodList];
     updatedProdList.splice(index, 1);
@@ -86,26 +53,12 @@ const ProdManagement = () => {
   return (
     <div className="row">
       <div className="col-lg-4">
-      <form style={formStyles}> 
-            <label htmlFor="category">
-              <h4>Category Management</h4>
-            </label>
-            <input 
-              type="text" id="category" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} style={styles.inputStyles}/>
-            <button 
-              type="button" onClick={handleCategoryAdd} className="bg-primary btn-sm" style={styles.buttonStyles}
-            >
-              Add Category
-            </button>
-          </form>
-
-
         <form style={formStyles}>
           <h4>Product Management</h4>
           <label htmlFor="prodId">
             <b>Product ID</b>
           </label>
-          <input type="text" id="productId" readOnly defaultValue="ITEM-1" required style={styles.inputStyles}/>
+          <input type="text" id="productId" readOnly value={productId} required style={styles.inputStyles}/>
 
           <label htmlFor="prodname"><b>Product Name</b></label>
           <input type="text" id="prodName" value={prodName} 
@@ -122,12 +75,7 @@ const ProdManagement = () => {
 
           <select
             id="filterCategory"
-            style={{
-              border: '1px solid #c2c0ca',
-              width: '100%',
-              padding: '15px',
-              borderRadius: '8px',
-            }}
+            style={{ border: '1px solid #c2c0ca', width: '100%', padding: '15px', borderRadius: '8px',}}
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -152,68 +100,7 @@ const ProdManagement = () => {
         </form>
       </div>
       <div className="col-lg-8">
-              {/* Table for categories */}
-              <table className="table table-responsive" >
-        <thead className="text-center">
-          <tr>
-            <th className="bg-primary text-white">Category</th>
-            <th className="bg-primary text-white">Action</th>
-          </tr>
-        </thead>
-        <tbody className="text-center" > 
-          {categories.map((category, index) => (
-            <tr key={index}>
-              <td>{category}</td>
-              <td>
-                <button class="btn btn-primary" onClick={() => handleEdit(index)}>Edit</button>
-                <button class="btn btn-danger" onClick={() => handleDelete(index)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-            {showCategoryModal && (
-  <div className="modal" style={{ display: 'block' }}>
-    <div className="modal-dialog" style={{ margin: '10% auto' }}>
-      <div className="modal-content">
-        <div className="modal-header">
-          <h5 className="modal-title">Edit Category</h5>
-          <button type="button" className="btn-close" color="none" aria-label="Close" onClick={() => setShowCategoryModal(false)}>
-            <span>&times;</span>
-          </button>
-        </div>
-        <div className="modal-body">
-          <form>
-            <div className="form-group">
-              <label htmlFor="editCategoryName">Category Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="editCategoryName"
-                value={editedCategory}
-                onChange={(e) => setEditedCategory(e.target.value)} 
-              />
-            </div>
-            {/* Other form fields for editing categories */}
-          </form>
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" onClick={() => setShowCategoryModal(false)}>
-            Close
-          </button>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleSaveEdit}
-          >
-            Save
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
+             
     <table className="table table-responsive">
       <thead className="text-center">
         <tr>
@@ -256,9 +143,7 @@ const ProdManagement = () => {
               <div className="form-group">
                 <label htmlFor="editProdName">Product Name</label>
                 <input
-                  type="text"
-                  className="form-control"
-                  id="editProdName"
+                  type="text" className="form-control" id="editProdName"
                   value={selectedProduct.prodName}
                   onChange={(e) => setSelectedProduct({ ...selectedProduct, prodName: e.target.value })}
                 />
@@ -266,24 +151,12 @@ const ProdManagement = () => {
             <div className="form-group">
               <label htmlFor="editProdPrice">Price</label>
               <input
-                type="number"
-                className="form-control"
-                id="editProdPrice"
+                type="number" className="form-control" id="editProdPrice"
                 value={selectedProduct.price}
                 onChange={(e) => setSelectedProduct({ ...selectedProduct, price: e.target.value })}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="editProdStock">Stock</label>
-              <input
-                type="number"
-                className="form-control"
-                id="editProdStock"
-                value={selectedProduct.stock}
-                onChange={(e) => setSelectedProduct({ ...selectedProduct, stock: e.target.value })}
-              />
-            </div>
-            {/* Add other fields for editing */}
+
           </form>
         </div>
         <div className="modal-footer">
@@ -314,17 +187,5 @@ const formStyles = {
     padding: "0 20px",
     fontSize: '16px',
   };
-
-// const modalStyles = {
-//   display: 'block',
-//   position: 'absolute',
-//   top: '50%',
-//   left: '50%',
-//   transform: 'translate(-50%, -50%)',
-//   zIndex: 1000,
-//   backgroundColor: '#fff',
-//   padding: '20px',
-// };
-
   
 export default ProdManagement;
