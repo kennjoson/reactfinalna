@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Chart from 'react-apexcharts';
 import { ProdListContext } from './ProdListContext';
 
-const ApexChart = () => {
+const LineChart = () => {
   const { prodList } = useContext(ProdListContext);
 
   const categories = prodList.map(product => product.prodName);
@@ -49,4 +49,4 @@ const ApexChart = () => {
   );
 };
 
-export default ApexChart;
+export default LineChart;

@@ -19,7 +19,6 @@ const StockManagement = () => {
     setShowProductModal(false);
   };
   
-
   return (
     <div>
       <h2>Stock Management</h2>
@@ -29,7 +28,6 @@ const StockManagement = () => {
             <th scope="col" className="bg-primary text-white">Product ID</th>
             <th scope="col" className="bg-primary text-white">Name</th>
             <th scope="col" className="bg-primary text-white">Stock</th>
-
             <th className="bg-primary text-white">Action</th>
           </tr>
         </thead>
@@ -67,7 +65,6 @@ const StockManagement = () => {
                 onChange={(e) => setSelectedProduct({ ...selectedProduct, stock: e.target.value })}
               />
             </div>
-
           </form>
         </div>
         <div className="modal-footer">

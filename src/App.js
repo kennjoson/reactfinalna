@@ -1,13 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ProdManagement from './ProductManagement';
 import StockManagement from './StockManagement';
 import CategoryManagement from './CategoryManagement';
 import { ProdListProvider } from './ProdListContext';
 import TransactionManagement from './TransactionManagement';
-import ApexChart from './LineChart';
+import LineChart from './LineChart';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 
 const App = () => {
-  const [selectedTab, setSelectedTab] = React.useState('Product Management');
+  const [selectedTab, setSelectedTab] = useState('Product Management');
+
+  const handleTabSelect = (tab) => {
+    setSelectedTab(tab);
+  };
 
   const TabContent = () => {
     if (selectedTab === 'Product Management') {
@@ -19,7 +25,7 @@ const App = () => {
     } else if (selectedTab === 'Transaction Management') {
       return <TransactionManagement />;
     } else if (selectedTab === 'Line Chart') {
-      return <ApexChart />;
+      return <LineChart />;
     }
     return null;
   };
@@ -27,25 +33,29 @@ const App = () => {
   return (
     <ProdListProvider>
       <div>
-        <ul style={{ display: 'flex', listStyle: 'none', justifyContent: 'center' }}>
-          <li style={{ marginRight: '10px' }}>
-            <button onClick={() => setSelectedTab('Product Management')}>Product Management</button>
-          </li>
-          <li style={{ marginRight: '10px' }}>
-            <button onClick={() => setSelectedTab('Stock Management')}>Stock Management</button>
-          </li>
-          <li style={{ marginRight: '10px' }}>
-            <button onClick={() => setSelectedTab('Category Management')}>Category Management</button>
-          </li>
-          <li style={{ marginRight: '10px' }}>
-            <button onClick={() => setSelectedTab('Transaction Management')}>Transaction Management</button>
-          </li>
-          <li style={{ marginRight: '10px' }}>
-            <button onClick={() => setSelectedTab('Line Chart')}>Stock Line Graph</button>
-          </li>
-        </ul>
-        <hr />
-        {TabContent()}
+        <Tabs
+          id="tab-navigation"
+          activeKey={selectedTab}
+          onSelect={handleTabSelect}
+          className="mb-3"
+          justify
+        >
+          <Tab eventKey="Product Management" title="Products">
+            {TabContent()}
+          </Tab>
+          <Tab eventKey="Stock Management" title="Stocks">
+            {TabContent()}
+          </Tab>
+          <Tab eventKey="Category Management" title="Categories">
+            {TabContent()}
+          </Tab>
+          <Tab eventKey="Transaction Management" title="Transactions">
+            {TabContent()}
+          </Tab>
+          <Tab eventKey="Line Chart" title="Stock Line Graph">
+            {TabContent()}
+          </Tab>
+        </Tabs>
       </div>
     </ProdListProvider>
   );
