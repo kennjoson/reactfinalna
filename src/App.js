@@ -43,13 +43,13 @@ const App = () => {
           <Tab eventKey="Product Management" title="Products">
             {TabContent()}
           </Tab>
-          <Tab eventKey="Stock Management" title="Stocks">
-            {TabContent()}
-          </Tab>
           <Tab eventKey="Category Management" title="Categories">
             {TabContent()}
           </Tab>
           <Tab eventKey="Transaction Management" title="Transactions">
+            {TabContent()}
+          </Tab>
+          <Tab eventKey="Stock Management" title="Stocks">
             {TabContent()}
           </Tab>
           <Tab eventKey="Line Chart" title="Stock Line Graph">
