@@ -38,6 +38,9 @@ const App = () => {
             <button onClick={() => setSelectedTab('Category Management')}>Category Management</button>
           </li>
           <li style={{ marginRight: '10px' }}>
+            <button onClick={() => setSelectedTab('Transaction Management')}>Transaction Management</button>
+          </li>
+          <li style={{ marginRight: '10px' }}>
             <button onClick={() => setSelectedTab('Line Chart')}>Line Chart</button>
           </li>
         </ul>
