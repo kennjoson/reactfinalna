@@ -21,7 +21,7 @@ const StockManagement = () => {
   
   return (
     <div>
-      <h2>Stock Management</h2>
+      <h3>Stock Management</h3>
       <table className="table table-responsive">
         <thead className="text-center">
           <tr>
