@@ -4,6 +4,7 @@ import StockManagement from './StockManagement';
 import CategoryManagement from './CategoryManagement';
 import { ProdListProvider } from './ProdListContext';
 import TransactionManagement from './TransactionManagement';
+import ApexChart from './LineChart';
 
 const App = () => {
   const [selectedTab, setSelectedTab] = React.useState('Product Management');
@@ -17,6 +18,8 @@ const App = () => {
       return <CategoryManagement />;
     } else if (selectedTab === 'Transaction Management') {
       return <TransactionManagement />;
+    } else if (selectedTab === 'Line Chart') {
+      return <ApexChart />;
     }
     return null;
   };
@@ -35,7 +38,7 @@ const App = () => {
             <button onClick={() => setSelectedTab('Category Management')}>Category Management</button>
           </li>
           <li style={{ marginRight: '10px' }}>
-            <button onClick={() => setSelectedTab('Transaction Management')}>Transaction Management</button>
+            <button onClick={() => setSelectedTab('Line Chart')}>Line Chart</button>
           </li>
         </ul>
         <hr />
