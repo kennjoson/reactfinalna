@@ -41,7 +41,7 @@ const App = () => {
             <button onClick={() => setSelectedTab('Transaction Management')}>Transaction Management</button>
           </li>
           <li style={{ marginRight: '10px' }}>
-            <button onClick={() => setSelectedTab('Line Chart')}>Line Chart</button>
+            <button onClick={() => setSelectedTab('Line Chart')}>Stock Line Graph</button>
           </li>
         </ul>
         <hr />

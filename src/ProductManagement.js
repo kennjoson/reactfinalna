@@ -121,7 +121,7 @@ const ProdManagement = () => {
                 <td>{product.stock}</td>
                 <td>{product.prodCategory}</td> 
                 <td>
-                  <button class="btn btn-primary" onClick={() => handleEditProduct(product)}>Edit</button>
+                  <button class="btn btn-primary" onClick={() => handleEditProduct(product)}>Update</button>
                   <button class="btn btn-danger" onClick={() => handleDeleteProduct(index)}>Delete</button>
                 </td>       
               </tr>
@@ -133,7 +133,7 @@ const ProdManagement = () => {
       <div className="modal-dialog" style={{ margin: '10% auto' }}>
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Edit Product</h5>
+            <h5 className="modal-title">Update Product</h5>
             <button type="button" className="btn-close" color="none" aria-label="Close" onClick={() => setShowProductModal(false)}>
               <span>&times;</span>
             </button>

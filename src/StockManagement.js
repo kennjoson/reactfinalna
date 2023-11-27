@@ -19,11 +19,6 @@ const StockManagement = () => {
     setShowProductModal(false);
   };
   
-  const handleDeleteProduct = (index) => {
-    const updatedProdList = [...prodList];
-    updatedProdList.splice(index, 1);
-    setProdList(updatedProdList);
-  };
 
   return (
     <div>
@@ -46,8 +41,7 @@ const StockManagement = () => {
 
               <td>{product.stock}</td>
               <td>
-                  <button class="btn btn-primary" onClick={() => handleEditProduct(product)}>Edit</button>
-                  <button class="btn btn-danger" onClick={() => handleDeleteProduct(index)}>Delete</button>
+                  <button class="btn btn-primary" onClick={() => handleEditProduct(product)}>Update</button>
                 </td>   
             </tr>
           ))}
@@ -58,7 +52,7 @@ const StockManagement = () => {
       <div className="modal-dialog" style={{ margin: '10% auto' }}>
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Edit Stock</h5>
+            <h5 className="modal-title">Update Stock</h5>
             <button type="button" className="btn-close" color="none" aria-label="Close" onClick={() => setShowProductModal(false)}>
               <span>&times;</span>
             </button>

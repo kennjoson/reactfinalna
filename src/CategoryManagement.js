@@ -78,7 +78,7 @@ const CategoryManagement = () => {
             <tr key={index}>
               <td>{category}</td>
               <td>
-                <button class="btn btn-primary" onClick={() => handleEdit(index)}>Edit</button>
+                <button class="btn btn-primary" onClick={() => handleEdit(index)}>Update</button>
                 <button class="btn btn-danger" onClick={() => handleDelete(index)}>Delete</button>
               </td>
             </tr>
@@ -90,7 +90,7 @@ const CategoryManagement = () => {
         <div className="modal-dialog" style={{ margin: '10% auto' }}>
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Edit Category</h5>
+              <h5 className="modal-title">Update Category</h5>
               <button type="button" className="btn-close" color="none" aria-label="Close" onClick={() => setShowCategoryModal(false)}>
                 <span>&times;</span>
               </button>
