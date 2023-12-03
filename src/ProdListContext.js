@@ -8,7 +8,8 @@ export const ProdListProvider = ({ children }) => {
   const [count, setCount] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [productId, setProductId] = useState('ITEM-1');
-
+  const [boughtProducts, setBoughtProducts] = useState([]); // New state for bought products
+  
   const ProductId = () => {
     const newCount = count + 1;
     setCount(newCount);
@@ -25,6 +26,11 @@ export const ProdListProvider = ({ children }) => {
     setProdList([...prodList, newProduct]);
   };
 
+  // Function to add bought products to the context
+  const addBoughtProduct = (boughtItem) => {
+    setBoughtProducts([...boughtProducts, boughtItem]);
+  };
+
   return (
     <ProdListContext.Provider
       value={{
@@ -36,6 +42,8 @@ export const ProdListProvider = ({ children }) => {
         addProduct,
         cartItems,
         setCartItems,
+        boughtProducts, // Expose boughtProducts in the context
+        addBoughtProduct, // Function to add bought products
       }}
     >
       {children}

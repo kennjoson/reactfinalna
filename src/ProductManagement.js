@@ -113,7 +113,9 @@ const ProdManagement = () => {
         </tr>
       </thead>
       <tbody id="tbodyproducts" className="text-center">
-        {prodList.map((product, index) => (
+        {prodList
+        .filter((product) => product.stock > 0)
+        .map((product, index) => (
               <tr key={index}>
                 <td>{product.productId}</td>
                 <td>{product.prodName}</td>
