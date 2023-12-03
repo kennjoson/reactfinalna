@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState } from 'react';
 import { ProdListContext } from './ProdListContext';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -6,13 +6,13 @@ import Button from 'react-bootstrap/Button';
 const TransactionManagement = () => {
   const { prodList, cartItems, setCartItems, addBoughtProduct } = useContext(ProdListContext);
   const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState('');
   const [receipt, setReceipt] = useState(null);
-  const selectedProductRef = useRef(null); // Use a ref for selectedProduct
 
   const handleAddToCart = (product) => {
     if (product.stock > 0) {
-      selectedProductRef.current = product; // Use ref to store the selected product
+      setSelectedProduct(product);
       setShowModal(true);
     } else {
       alert('This product is out of stock.');
@@ -21,18 +21,16 @@ const TransactionManagement = () => {
 
   const addToCart = () => {
     if (quantity !== '') {
-      const selectedProduct = selectedProductRef.current;
-      
       if (parseInt(quantity) > selectedProduct.stock) {
         alert('Entered quantity exceeds available stock.');
         return;
       }
       const cartItem = {
-        productId: selectedProductRef.current.productId,
-        prodName: selectedProductRef.current.prodName,
+        productId: selectedProduct.productId,
+        prodName: selectedProduct.prodName,
         quantity,
         dateAdded: new Date().toLocaleString(),
-        totalItemPrice: selectedProductRef.current.price * quantity,
+        totalItemPrice: selectedProduct.price * quantity,
       };
 
       const updatedCart = [...cartItems, cartItem];
@@ -40,6 +38,7 @@ const TransactionManagement = () => {
 
       setShowModal(false);
       setQuantity('');
+      setSelectedProduct(null);
     } else {
       alert('Fields are required');
     }
@@ -127,8 +126,8 @@ const TransactionManagement = () => {
               <Modal.Title className="text-success text-center">Choose Quantity</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <p>Product: {selectedProductRef.current ? selectedProductRef.current.prodName : ''}</p>
-            <p>Available Stock: {selectedProductRef.current ? selectedProductRef.current.stock : ''}</p>
+            <p>Product: {selectedProduct ? selectedProduct.prodName : ''}</p>
+            <p>Available Stock: {selectedProduct? selectedProduct.stock : ''}</p>
             <div className="form-group">
               <label htmlFor="quantityInput" className="form-label">
                 Quantity:
