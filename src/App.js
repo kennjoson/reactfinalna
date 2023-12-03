@@ -1,8 +1,5 @@
 import React, {useState} from 'react';
-<<<<<<< HEAD
 import { ProdListProvider } from './ProdListContext';
-=======
->>>>>>> d453bdb38f869610d67194164ce12f57b3b141ba
 import ProdManagement from './ProductManagement';
 import StockManagement from './StockManagement';
 import CategoryManagement from './CategoryManagement';
@@ -30,11 +27,8 @@ const App = () => {
       return <TransactionManagement />;
     } else if (selectedTab === 'Line Chart') {
       return <LineChart />;
-<<<<<<< HEAD
     } else if (selectedTab === 'Transaction Report') {
       return <TransactionReport />;
-=======
->>>>>>> d453bdb38f869610d67194164ce12f57b3b141ba
     }
     return null;
   };
@@ -61,12 +55,9 @@ const App = () => {
           <Tab eventKey="Stock Management" title="Stocks">
             {TabContent()}
           </Tab>
-<<<<<<< HEAD
           <Tab eventKey="Transaction Report" title="Report">
             {TabContent()}
           </Tab>
-=======
->>>>>>> d453bdb38f869610d67194164ce12f57b3b141ba
           <Tab eventKey="Line Chart" title="Stock Line Graph">
             {TabContent()}
           </Tab>
