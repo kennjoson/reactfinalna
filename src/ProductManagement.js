@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { styles } from "./Styles";
 import './styles.css';
 import { ProdListContext } from './ProdListContext';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 
 const ProdManagement = () => {
@@ -114,13 +116,14 @@ const ProdManagement = () => {
       </thead>
       <tbody id="tbodyproducts" className="text-center">
         {prodList
-        .filter((product) => product.stock > 0)
         .map((product, index) => (
               <tr key={index}>
                 <td>{product.productId}</td>
                 <td>{product.prodName}</td>
                 <td>₱{product.price}</td>
-                <td>{product.stock}</td>
+                <td className={product.stock === 0 ? 'text-danger' : ''}>
+                  {product.stock === 0 ? 'Out of Stock' : product.stock}
+                </td>
                 <td>{product.prodCategory}</td> 
                 <td>
                   <button class="btn btn-primary" onClick={() => handleEditProduct(product)}>Update</button>
@@ -130,51 +133,48 @@ const ProdManagement = () => {
             ))}
       </tbody>
     </table>
-  {showProductModal && selectedProduct && (
-    <div className="modal" style={{ display: 'block' }}>
-      <div className="modal-dialog" style={{ margin: '10% auto' }}>
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">Update Product</h5>
-            <button type="button" className="btn-close" color="none" aria-label="Close" onClick={() => setShowProductModal(false)}>
-              <span>&times;</span>
-            </button>
-          </div>
-          <div className="modal-body">
-            <form>
-              <div className="form-group">
-                <label htmlFor="editProdName">Product Name</label>
-                <input
-                  type="text" className="form-control" id="editProdName"
-                  value={selectedProduct.prodName}
-                  onChange={(e) => setSelectedProduct({ ...selectedProduct, prodName: e.target.value })}
-                />
-              </div>
-            <div className="form-group">
-              <label htmlFor="editProdPrice">Price</label>
-              <input
-                type="number" className="form-control" id="editProdPrice"
-                value={selectedProduct.price}
-                onChange={(e) => setSelectedProduct({ ...selectedProduct, price: e.target.value })}
-              />
-            </div>
-
-          </form>
+    {showProductModal && selectedProduct && (
+  <Modal show={showProductModal} onHide={() => setShowProductModal(false)}>
+    <Modal.Header closeButton>
+      <Modal.Title>Update Product</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <form>
+        <div className="form-group">
+          <label htmlFor="editProdName">Product Name</label>
+          <input
+            type="text"
+            className="form-control"
+            id="editProdName"
+            value={selectedProduct.prodName}
+            onChange={(e) =>
+              setSelectedProduct({ ...selectedProduct, prodName: e.target.value })
+            }
+          />
         </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" onClick={() => setShowProductModal(false)}>
-            Close
-          </button>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => handleSaveProductEdit(selectedProduct)}>
-            Save
-          </button>
+        <div className="form-group">
+          <label htmlFor="editProdPrice">Price</label>
+          <input
+            type="number"
+            className="form-control"
+            id="editProdPrice"
+            value={selectedProduct.price}
+            onChange={(e) =>
+              setSelectedProduct({ ...selectedProduct, price: e.target.value })
+            }
+          />
         </div>
-      </div>
-    </div>
-  </div>
+      </form>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={() => setShowProductModal(false)}>
+        Close
+      </Button>
+      <Button variant="primary" onClick={() => handleSaveProductEdit(selectedProduct)}>
+        Save
+      </Button>
+    </Modal.Footer>
+  </Modal>
 )}
 
 

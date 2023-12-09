@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 import { styles } from './Styles';
-import { ProdListContext } from './ProdListContext'; // Import the context
+import { ProdListContext } from './ProdListContext';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const CategoryManagement = () => {
   const { categories, setCategories } = React.useContext(ProdListContext); // Access the categories from the context
@@ -18,7 +20,7 @@ const CategoryManagement = () => {
       setCategories(updatedCategories);
       setNewCategory('');
     } else {
-      alert(' This category is already added!bubu');
+      alert(' This category is already added!');
     }
   };
 
@@ -85,47 +87,35 @@ const CategoryManagement = () => {
           ))}
         </tbody> 
       </table>
-        {showCategoryModal && (
-      <div className="modal" style={{ display: 'block' }}>
-        <div className="modal-dialog" style={{ margin: '10% auto' }}>
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Update Category</h5>
-              <button type="button" className="btn-close" color="none" aria-label="Close" onClick={() => setShowCategoryModal(false)}>
-                <span>&times;</span>
-              </button>
+          {showCategoryModal && (
+      <Modal show={showCategoryModal} onHide={() => setShowCategoryModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Update Category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="form-group">
+              <label htmlFor="editCategoryName">Category Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="editCategoryName"
+                value={editedCategory}
+                onChange={(e) => setEditedCategory(e.target.value)} 
+              />
             </div>
-            <div className="modal-body">
-              <form>
-                <div className="form-group">
-                  <label htmlFor="editCategoryName">Category Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="editCategoryName"
-                    value={editedCategory}
-                    onChange={(e) => setEditedCategory(e.target.value)} 
-                  />
-                </div>
-                {/* Other form fields for editing categories */}
-              </form>
-            </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={() => setShowCategoryModal(false)}>
-              Close
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleSaveEdit}
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  )}
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowCategoryModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSaveEdit}>
+            Save
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    )}
     </div>
   </div>
 );
@@ -138,9 +128,6 @@ padding: '0 20px',
 fontSize: '16px',
 };
 
-
 export default CategoryManagement;
-
-
 
 

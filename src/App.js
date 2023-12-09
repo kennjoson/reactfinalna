@@ -6,6 +6,7 @@ import CategoryManagement from './CategoryManagement';
 import TransactionReport from './TransactionReport';
 import TransactionManagement from './TransactionManagement';
 import LineChart from './LineChart';
+import BarChart from './BarChart';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
@@ -29,6 +30,8 @@ const App = () => {
       return <LineChart />;
     } else if (selectedTab === 'Transaction Report') {
       return <TransactionReport />;
+    } else if (selectedTab === 'Bar Chart') {
+      return <BarChart />;
     }
     return null;
   };
@@ -59,6 +62,9 @@ const App = () => {
             {TabContent()}
           </Tab>
           <Tab eventKey="Line Chart" title="Stock Line Graph">
+            {TabContent()}
+          </Tab>
+          <Tab eventKey="Bar Chart" title="Sales Bar Graph">
             {TabContent()}
           </Tab>
         </Tabs>

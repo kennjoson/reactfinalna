@@ -18,7 +18,7 @@ const LineChart = () => {
       height: 350,
       type: 'line',
       zoom: {
-        enabled: true
+        enabled: false
       }
     },
     dataLabels: {
@@ -29,22 +29,25 @@ const LineChart = () => {
     },
     title: {
       text: 'Stock Chart',
-      align: 'left'
+      align: 'center'
     },
     grid: {
       row: {
         colors: ['#f3f3f3', 'transparent'],
-        opacity: 0.5
+        opacity: 1
       },
     },
     xaxis: {
-      categories: categories
+      categories: categories,
+    },
+    markers: {
+      size: [8, 7]
     }
   };
 
   return (
     <div id="chart">
-      <Chart options={chartOptions} series={series} type="line" height={360} width={1300}/>
+      <Chart options={chartOptions} series={series} type="line" height={360} width={1300} />
     </div>
   );
 };

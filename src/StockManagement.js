@@ -37,7 +37,7 @@ const StockManagement = () => {
       </div>
       <div className="row">
         <div className="col">
-          <table className="table table-bordered table-responsive custom-table-width">
+          <table className="table table-responsive custom-table-width">
             <thead className="text-center">
               <tr>
                 <th scope="col" className="bg-primary text-white">Product ID</th>
@@ -48,12 +48,13 @@ const StockManagement = () => {
             </thead>
             <tbody id="tbodyproducts" className="text-center">
               {prodList
-              .filter((product) => product.stock > 0)
               .map((product, index) => (
                 <tr key={index}>
                   <td>{product.productId}</td>
                   <td>{product.prodName}</td>
-                  <td>{product.stock}</td>
+                  <td className={product.stock === 0 ? 'text-danger' : ''}>
+                  {product.stock === 0 ? 'Out of Stock' : product.stock}
+                </td>
                   <td>
                     <button className="btn btn-primary me-2" onClick={() => handleEditProduct(product)}>Edit</button>
                     <button className="btn btn-danger" onClick={() => handleDeleteProduct(index)}>Delete</button>
