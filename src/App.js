@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import { ProdListProvider } from './ProdListContext';
-import ProdManagement from './ProductManagement';
-import StockManagement from './StockManagement';
-import CategoryManagement from './CategoryManagement';
-import TransactionReport from './TransactionReport';
-import TransactionManagement from './TransactionManagement';
-import LineChart from './LineChart';
-import BarChart from './BarChart';
+import { ProdListProvider } from './Modules/ProdListContext';
+import ProdManagement from './Modules/ProductManagement';
+import StockManagement from './Modules/StockManagement';
+import CategoryManagement from './Modules/CategoryManagement';
+import TransactionReport from './Modules/TransactionReport';
+import TransactionManagement from './Modules/TransactionManagement';
+import LineChart from './Modules/LineChart';
+import BarChart from './Modules/BarChart';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 

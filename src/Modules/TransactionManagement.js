@@ -50,9 +50,11 @@ const TransactionManagement = () => {
   };
 
   const handleBuyItem = (item) => {
-    const selectedProduct = prodList.find((product) => product.productId === item.productId);
-
-    if (selectedProduct && selectedProduct.stock >= item.quantity) {
+    const selectedProductIndex = prodList.findIndex((product) => product.productId === item.productId);
+  
+    if (selectedProductIndex !== -1 && prodList[selectedProductIndex].stock >= item.quantity) {
+      const selectedProduct = prodList[selectedProductIndex];
+      
       const boughtItem = {
         prodName: item.prodName,
         price: selectedProduct.price,
@@ -60,21 +62,20 @@ const TransactionManagement = () => {
         totalPrice: item.totalItemPrice,
         purchaseDate: new Date().toLocaleDateString(),
       };
-
+  
       // Update stock after purchase
-      selectedProduct.stock -= item.quantity;
-
+      prodList[selectedProductIndex].stock -= item.quantity;
+  
       setReceipt(boughtItem);
-
+  
       const updatedCart = cartItems.filter((cartItem) => cartItem !== item);
       setCartItems(updatedCart);
-
-      // Add purchased item to context
+  
       addBoughtProduct(boughtItem);
     } else {
-      alert(selectedProduct ? 'Not enough stock to complete the purchase.' : 'Selected product not found.');
+      alert(selectedProductIndex !== -1 ? 'Product not found.' : 'Not enough stock to complete the order.');
     }
-
+  
     setShowModal(false);
   };
 
