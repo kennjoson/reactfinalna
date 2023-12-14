@@ -71,7 +71,7 @@ const BarChart = () => {
 
   return (
     <div id="chart">
-      <Chart options={chartData.options} series={chartData.series} type="bar" height={250} />
+      <Chart options={chartData.options} series={chartData.series} type="bar" height={300} />
     </div>
   );
 };

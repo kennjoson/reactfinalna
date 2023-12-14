@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 const TransactionManagement = () => {
-  const { prodList, cartItems, setCartItems, addBoughtProduct } = useContext(ProdListContext);
+  const { prodList, cartItems, setCartItems, setProdList, addBoughtProduct } = useContext(ProdListContext);
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState('');
@@ -50,11 +50,9 @@ const TransactionManagement = () => {
   };
 
   const handleBuyItem = (item) => {
-    const selectedProductIndex = prodList.findIndex((product) => product.productId === item.productId);
-  
-    if (selectedProductIndex !== -1 && prodList[selectedProductIndex].stock >= item.quantity) {
-      const selectedProduct = prodList[selectedProductIndex];
-      
+    const selectedProduct = prodList.find((product) => product.productId === item.productId);
+
+    if (selectedProduct && selectedProduct.stock >= item.quantity) {
       const boughtItem = {
         prodName: item.prodName,
         price: selectedProduct.price,
@@ -63,20 +61,21 @@ const TransactionManagement = () => {
         purchaseDate: new Date().toLocaleDateString(),
       };
   
-      // Update stock after purchase
-      prodList[selectedProductIndex].stock -= item.quantity;
+      const updatedProdList = prodList.map((product) =>
+        product.productId === selectedProduct.productId
+          ? { ...product, stock: product.stock - item.quantity }
+          : product
+      );
   
       setReceipt(boughtItem);
-  
-      const updatedCart = cartItems.filter((cartItem) => cartItem !== item);
-      setCartItems(updatedCart);
-  
+      setCartItems(cartItems.filter((cartItem) => cartItem !== item));
       addBoughtProduct(boughtItem);
+      setProdList(updatedProdList);
+      setShowModal(false);
     } else {
-      alert(selectedProductIndex !== -1 ? 'Product not found.' : 'Not enough stock to complete the order.');
+      alert(selectedProduct && selectedProduct.stock >= item.quantity ? 'Not enough stock.' : 'Product not found or not enough stock.');
+      setShowModal(false);
     }
-  
-    setShowModal(false);
   };
 
   const handleRemoveItem = (item) => {
@@ -88,16 +87,16 @@ const TransactionManagement = () => {
     <div className="container mt-4">
       <div className="row">
         <div className="col-lg-6">
-          <h2 className="text-primary mb-4">Transaction Management</h2>
+          <h2 className="mb-3">Transaction Management</h2>
           <table className="table table-hover">
             <thead className="thead-dark">
               <tr>
-                <th className="text-center bg-primary text-white">Product ID</th>
-                <th className="text-center bg-primary text-white">Name</th>
-                <th className="text-center bg-primary text-white">Price</th>
-                <th className="text-center bg-primary text-white">Stock</th>
-                <th className="text-center bg-primary text-white">Category</th>
-                <th className="text-center bg-primary text-white">Action</th>
+                <th className="text-center bg-danger text-white">Product ID</th>
+                <th className="text-center bg-warning text-white">Name</th>
+                <th className="text-center bg-warning text-white">Price</th>
+                <th className="text-center bg-warning text-white">Stock</th>
+                <th className="text-center bg-warning text-white">Category</th>
+                <th className="text-center bg-warning text-white">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -191,7 +190,7 @@ const TransactionManagement = () => {
                 <td className="text-center">{item.quantity}</td>
                 <td className="text-center">₱{item.totalItemPrice.toFixed(2)}</td>
                 <td className="text-center">
-                  <button className="btn btn-success me-2" onClick={() => handleBuyItem(item)}>Place Order</button>
+                  <button className="btn btn-success me-1" onClick={() => handleBuyItem(item)}>Place Order</button>
                   <button className="btn btn-danger" onClick={() => handleRemoveItem(item)}>Cancel</button>
                 </td>
               </tr>

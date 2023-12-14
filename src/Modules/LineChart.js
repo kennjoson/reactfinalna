@@ -47,7 +47,7 @@ const LineChart = () => {
 
   return (
     <div id="chart">
-      <Chart options={chartOptions} series={series} type="line" height={360} width={1300} />
+      <Chart options={chartOptions} series={series} type="line" height={300} />
     </div>
   );
 };

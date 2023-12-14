@@ -5,10 +5,9 @@ import StockManagement from './Modules/StockManagement';
 import CategoryManagement from './Modules/CategoryManagement';
 import TransactionReport from './Modules/TransactionReport';
 import TransactionManagement from './Modules/TransactionManagement';
-import LineChart from './Modules/LineChart';
-import BarChart from './Modules/BarChart';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import CombinedCharts from './Modules/CombineChart';
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState('Product Management');
@@ -26,12 +25,11 @@ const App = () => {
       return <CategoryManagement />;
     } else if (selectedTab === 'Transaction Management') {
       return <TransactionManagement />;
-    } else if (selectedTab === 'Line Chart') {
-      return <LineChart />;
     } else if (selectedTab === 'Transaction Report') {
       return <TransactionReport />;
-    } else if (selectedTab === 'Bar Chart') {
-      return <BarChart />;
+
+    } else if (selectedTab === 'Combined Chart') {
+      return <CombinedCharts />;
     }
     return null;
   };
@@ -43,10 +41,11 @@ const App = () => {
           id="tab-navigation"
           activeKey={selectedTab}
           onSelect={handleTabSelect}
-          className="mb-3"
+          className="mb-1"
           justify
+          variant="pills"
         >
-          <Tab eventKey="Product Management" title="Products">
+          <Tab eventKey="Product Management" title="Products" >
             {TabContent()}
           </Tab>
           <Tab eventKey="Category Management" title="Categories">
@@ -61,10 +60,7 @@ const App = () => {
           <Tab eventKey="Transaction Report" title="Report">
             {TabContent()}
           </Tab>
-          <Tab eventKey="Line Chart" title="Stock Line Graph">
-            {TabContent()}
-          </Tab>
-          <Tab eventKey="Bar Chart" title="Sales Bar Graph">
+          <Tab eventKey="Combined Chart" title="Charts">
             {TabContent()}
           </Tab>
         </Tabs>

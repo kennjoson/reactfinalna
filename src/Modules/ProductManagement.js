@@ -3,8 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { styles } from "./Styles";
 import './styles.css';
 import { ProdListContext } from './ProdListContext';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+import { FormControl} from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+
 
 
 const ProdManagement = () => {
@@ -53,31 +55,39 @@ const ProdManagement = () => {
   };
 
   return (
-    <div className="row">
-      <div className="col-lg-4">
+    <div className="row" style={fullPageStyles}>
+      <div className="col-lg-4" style={boxStyles}>
         <form style={formStyles}>
-          <h4>Product Management</h4>
+          <h4 style={{textAlign:'center', marginTop:'2%'}}>Product Management</h4>
           <label htmlFor="prodId">
             <b>Product ID</b>
           </label>
           <input type="text" id="productId" readOnly value={productId} required style={styles.inputStyles}/>
+        
+          <InputGroup size="md">
+          <InputGroup.Text id="inputGroup-sizing-lg">Name:</InputGroup.Text>
+        <Form.Control style={{padding:"2%"}} type="product" id="prodName" value={prodName}
+              onChange={(e) => setProdName(e.target.value)}/>
+        </InputGroup>
+      
+        <br/>
+        <InputGroup size="md">
+        <InputGroup.Text id="inputGroup-sizing-lg">Price:</InputGroup.Text>
+          <Form.Control style={{padding:"2%"}} type="number"id="Price" name="Price"value={price}
+                onChange={(e) => setPrice(e.target.value)}/>
+        </InputGroup>
+         
+       <br/>
 
-          <label htmlFor="prodname"><b>Product Name</b></label>
-          <input type="text" id="prodName" value={prodName} 
-              onChange={(e) => setProdName(e.target.value)} required style={styles.inputStyles}/>
-
-          <label htmlFor="sellprice"><b>Price</b></label>
-          <input type="number" id="Price" name="Price" value={price}
-              onChange={(e) => setPrice(e.target.value)} required style={styles.inputStyles}/>
-
-          <label htmlFor="stocks"><b>Stock</b></label>
-          <input type="number" id="stock" name="stock" value={stock}
-              onChange={(e) => setStock(e.target.value)} required style={styles.inputStyles}/>
           
-
-          <select
+          <InputGroup size="md">
+          <InputGroup.Text id="inputGroup-sizing-lg">Stock:</InputGroup.Text>
+          <FormControl style={{padding:"2%"}} type="number" id="stock" name="stock" value={stock}
+              onChange={(e) => setStock(e.target.value)}/>
+         </InputGroup>
+         <br/>
+          <Form.Select style={{padding:"2%"}} size="md"
             id="filterCategory"
-            style={{ border: '1px solid #c2c0ca', width: '100%', padding: '15px', borderRadius: '8px',}}
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -87,94 +97,89 @@ const ProdManagement = () => {
                 {category}
               </option>
             ))}
-          </select>
-
-
-          <button 
-            className="bg-primary btn-sm" 
-            type="submit" 
-            id="btn" 
-            onClick={handleButton} 
-            style={styles.buttonStyles}
-          >
-            Add
+          </Form.Select>  
+          <br/>
+          <button className="bg-primary btn-sm" type="submit" style={styles.buttonStyles} onClick={handleButton }>
+          Submit
           </button>
         </form>
       </div>
-      <div className="col-lg-8">
+      <div className="col-md-8">
              
     <table className="table table-responsive">
       <thead className="text-center">
         <tr>
-          <th scope="col" className="bg-primary text-white">Product ID</th>
-          <th scope="col" className="bg-primary text-white">Name</th>
-          <th scope="col" className="bg-primary text-white">Price</th>
-          <th scope="col" className="bg-primary text-white">Stock</th>
-          <th scope="col" className="bg-primary text-white">Category</th>
-          <th scope="col" className="bg-primary text-white">Action</th>
+          <th scope="col" className="bg-danger text-white">Product ID</th>
+          <th scope="col" className="bg-warning text-white">Name</th>
+          <th scope="col" className="bg-warning text-white">Price</th>
+          <th scope="col" className="bg-warning text-white">Stock</th>
+          <th scope="col" className="bg-warning text-white">Category</th>
+          <th scope="col" className="bg-warning text-white">Action</th>
         </tr>
       </thead>
       <tbody id="tbodyproducts" className="text-center">
         {prodList
+        .filter((product) => product.stock > 0)
         .map((product, index) => (
               <tr key={index}>
                 <td>{product.productId}</td>
                 <td>{product.prodName}</td>
                 <td>₱{product.price}</td>
-                <td className={product.stock === 0 ? 'text-danger' : ''}>
-                  {product.stock === 0 ? 'Out of Stock' : product.stock}
-                </td>
+                <td>{product.stock}</td>
                 <td>{product.prodCategory}</td> 
                 <td>
-                  <button class="btn btn-primary" onClick={() => handleEditProduct(product)}>Update</button>
+                  <button class="btn btn-primary me-1" onClick={() => handleEditProduct(product)}>Update</button>
                   <button class="btn btn-danger" onClick={() => handleDeleteProduct(index)}>Delete</button>
                 </td>       
               </tr>
             ))}
       </tbody>
     </table>
-    {showProductModal && selectedProduct && (
-  <Modal show={showProductModal} onHide={() => setShowProductModal(false)}>
-    <Modal.Header closeButton>
-      <Modal.Title>Update Product</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <form>
-        <div className="form-group">
-          <label htmlFor="editProdName">Product Name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="editProdName"
-            value={selectedProduct.prodName}
-            onChange={(e) =>
-              setSelectedProduct({ ...selectedProduct, prodName: e.target.value })
-            }
-          />
+  {showProductModal && selectedProduct && (
+    <div className="modal" style={{ display: 'block' }}>
+      <div className="modal-dialog" style={{ margin: '10% auto' }}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Update Product</h5>
+            <button type="button" className="btn-close" color="none" aria-label="Close" onClick={() => setShowProductModal(false)}>
+              <span>&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <form>
+              <div className="form-group">
+                <label htmlFor="editProdName">Product Name</label>
+                <input
+                  type="text" className="form-control" id="editProdName"
+                  value={selectedProduct.prodName}
+                  onChange={(e) => setSelectedProduct({ ...selectedProduct, prodName: e.target.value })}
+                />
+              </div>
+            <div className="form-group">
+              <label htmlFor="editProdPrice">Price</label>
+              <input
+                type="number" className="form-control" id="editProdPrice"
+                value={selectedProduct.price}
+                onChange={(e) => setSelectedProduct({ ...selectedProduct, price: e.target.value })}
+              />
+            </div>
+
+          </form>
         </div>
-        <div className="form-group">
-          <label htmlFor="editProdPrice">Price</label>
-          <input
-            type="number"
-            className="form-control"
-            id="editProdPrice"
-            value={selectedProduct.price}
-            onChange={(e) =>
-              setSelectedProduct({ ...selectedProduct, price: e.target.value })
-            }
-          />
+        <div className="modal-footer">
+          <button type="button" className="btn btn-secondary" onClick={() => setShowProductModal(false)}>
+            Close
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => handleSaveProductEdit(selectedProduct)}>
+            Save
+          </button>
         </div>
-      </form>
-    </Modal.Body>
-    <Modal.Footer>
-      <Button variant="secondary" onClick={() => setShowProductModal(false)}>
-        Close
-      </Button>
-      <Button variant="primary" onClick={() => handleSaveProductEdit(selectedProduct)}>
-        Save
-      </Button>
-    </Modal.Footer>
-  </Modal>
+      </div>
+    </div>
+  </div>
 )}
 
 
@@ -183,11 +188,25 @@ const ProdManagement = () => {
     </div>
   );
 };
+
+const boxStyles = {
+  boxShadow: '7px 8px 10px rgba(0, 0, 0, 0.1)',
+  padding: '20px',
+  borderRadius: '8px',
+  backgroundColor: '#fff', 
+  height: '50%',
+};
 const formStyles = {
     fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
     backgroundColor: 'white',
     padding: "0 20px",
     fontSize: '16px',
+  };
+
+  const fullPageStyles = {
+    backgroundColor: '#f5f5f5',
+    minHeight: '100vh', 
+    padding: '20px', 
   };
   
 export default ProdManagement;

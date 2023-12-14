@@ -3,11 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 import { styles } from './Styles';
 import { ProdListContext } from './ProdListContext';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+// import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
 
 const CategoryManagement = () => {
-  const { categories, setCategories } = React.useContext(ProdListContext); // Access the categories from the context
+  const { categories, setCategories } = React.useContext(ProdListContext);
   const [newCategory, setNewCategory] = useState('');
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [editedCategory, setEditedCategory] = useState('');
@@ -46,10 +46,10 @@ const CategoryManagement = () => {
 
 
   return (
-  <div className="row">
-    <div className="col-lg-4">
+  <div className="row" style={fullPageStyles}>
+    <div className="col-lg-4" style={boxStyles}>
       <form style={formStyles} onSubmit={handleNewCategory}>
-        <h3>Category Management</h3>
+        <h3 style={{textAlign:'center'}}>Category Management</h3>
         <label htmlFor="prodCategory">
           <b>Set Category</b>
         </label>
@@ -71,8 +71,8 @@ const CategoryManagement = () => {
       <table className="table table-responsive">
         <thead className="text-center">
           <tr>
-            <th scope="col" className="bg-primary text-white">Category</th>
-            <th className="bg-primary text-white">Action</th>
+            <th scope="col" className="bg-danger text-white">Category</th>
+            <th className="bg-warning text-white">Action</th>
           </tr>
         </thead>
         <tbody id="tbodyproducts" className="text-center">
@@ -80,42 +80,53 @@ const CategoryManagement = () => {
             <tr key={index}>
               <td>{category}</td>
               <td>
-                <button class="btn btn-primary" onClick={() => handleEdit(index)}>Update</button>
+                <button class="btn btn-primary me-1" onClick={() => handleEdit(index)}>Update</button>
                 <button class="btn btn-danger" onClick={() => handleDelete(index)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody> 
       </table>
-          {showCategoryModal && (
-      <Modal show={showCategoryModal} onHide={() => setShowCategoryModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Update Category</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <div className="form-group">
-              <label htmlFor="editCategoryName">Category Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="editCategoryName"
-                value={editedCategory}
-                onChange={(e) => setEditedCategory(e.target.value)} 
-              />
+        {showCategoryModal && (
+      <div className="modal" style={{ display: 'block' }}>
+        <div className="modal-dialog" style={{ margin: '10% auto' }}>
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Update Category</h5>
+              <button type="button" className="btn-close" color="none" aria-label="Close" onClick={() => setShowCategoryModal(false)}>
+                <span>&times;</span>
+              </button>
             </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowCategoryModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSaveEdit}>
-            Save
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    )}
+            <div className="modal-body">
+              <form>
+                <div className="form-group">
+                  <label htmlFor="editCategoryName">Category Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="editCategoryName"
+                    value={editedCategory}
+                    onChange={(e) => setEditedCategory(e.target.value)} 
+                  />
+                </div>
+              </form>
+            </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" onClick={() => setShowCategoryModal(false)}>
+              Close
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleSaveEdit}
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
     </div>
   </div>
 );
@@ -126,6 +137,20 @@ fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
 backgroundColor: 'white',
 padding: '0 20px',
 fontSize: '16px',
+};
+
+const boxStyles = {
+  boxShadow: '7px 8px 10px rgba(0, 0, 0, 0.1)',
+  padding: '20px',
+  borderRadius: '8px',
+  backgroundColor: '#fff', 
+  height: '50%',
+};
+
+const fullPageStyles = {
+  backgroundColor: '#f5f5f5',
+  minHeight: '100vh', 
+  padding: '20px', 
 };
 
 export default CategoryManagement;

@@ -32,7 +32,7 @@ const StockManagement = () => {
     <div className="container">
       <div className="row">
         <div className="col">
-          <h2 className="float-start">Stock Management</h2>
+          <h2  style={{marginLeft:'150px*'}}>Stock Management</h2>
         </div>
       </div>
       <div className="row">
@@ -40,10 +40,10 @@ const StockManagement = () => {
           <table className="table table-responsive custom-table-width">
             <thead className="text-center">
               <tr>
-                <th scope="col" className="bg-primary text-white">Product ID</th>
-                <th scope="col" className="bg-primary text-white">Name</th>
-                <th scope="col" className="bg-primary text-white">Stock</th>
-                <th className="bg-primary text-white">Action</th>
+                <th scope="col" className="bg-danger text-white">Product ID</th>
+                <th scope="col" className="bg-warning text-white">Name</th>
+                <th scope="col" className="bg-warning text-white">Stock</th>
+                <th className="bg-warning text-white">Action</th>
               </tr>
             </thead>
             <tbody id="tbodyproducts" className="text-center">
@@ -56,7 +56,7 @@ const StockManagement = () => {
                   {product.stock === 0 ? 'Out of Stock' : product.stock}
                 </td>
                   <td>
-                    <button className="btn btn-primary me-2" onClick={() => handleEditProduct(product)}>Edit</button>
+                    <button className="btn btn-primary me-1" onClick={() => handleEditProduct(product)}>Edit</button>
                     <button className="btn btn-danger" onClick={() => handleDeleteProduct(index)}>Delete</button>
                   </td>
                 </tr>
