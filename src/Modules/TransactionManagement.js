@@ -51,7 +51,7 @@ const TransactionManagement = () => {
 
   const handleBuyItem = (item) => {
     const selectedProduct = prodList.find((product) => product.productId === item.productId);
-
+  
     if (selectedProduct && selectedProduct.stock >= item.quantity) {
       const boughtItem = {
         prodName: item.prodName,
@@ -61,14 +61,18 @@ const TransactionManagement = () => {
         purchaseDate: new Date().toLocaleDateString(),
       };
   
+      const updatedCartItems = cartItems.map((cartItem) =>
+        cartItem.productId === item.productId ? { ...cartItem, quantity: cartItem.quantity - item.quantity } : cartItem
+      );
+  
       const updatedProdList = prodList.map((product) =>
-        product.productId === selectedProduct.productId
+        product.productId === item.productId
           ? { ...product, stock: product.stock - item.quantity }
           : product
       );
   
       setReceipt(boughtItem);
-      setCartItems(cartItems.filter((cartItem) => cartItem !== item));
+      setCartItems(updatedCartItems.filter((cartItem) => cartItem.quantity > 0));
       addBoughtProduct(boughtItem);
       setProdList(updatedProdList);
       setShowModal(false);
@@ -77,6 +81,7 @@ const TransactionManagement = () => {
       setShowModal(false);
     }
   };
+  
 
   const handleRemoveItem = (item) => {
     const updatedCart = cartItems.filter((cartItem) => cartItem !== item);
