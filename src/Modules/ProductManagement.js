@@ -27,6 +27,11 @@ const ProdManagement = () => {
       return false;
     }
 
+    if (parseInt(stock) === 0) {
+      alert('Please input a stock value greater than zero!');
+      return false;
+    }
+    
     addProduct(prodName, price, stock, selectedCategory);
 
     setProdName('');
